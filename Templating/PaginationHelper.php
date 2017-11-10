@@ -42,7 +42,7 @@ class PaginationHelper extends Helper
      *
      * @return string
      */
-    public function render(SlidingPagination $pagination, $template = null, array $queryParams = array(), array $viewParams = array())
+    public function render(SlidingPagination $pagination, $template = null, array $queryParams = [], array $viewParams = [])
     {
         return $this->templating->render(
             $template ?: $pagination->getTemplate(),
@@ -67,7 +67,7 @@ class PaginationHelper extends Helper
      *
      * @return string
      */
-    public function sortable(SlidingPagination $pagination, $title, $key, $options = array(), $params = array(), $template = null)
+    public function sortable(SlidingPagination $pagination, $title, $key, $options = [], $params = [], $template = null)
     {
         return $this->templating->render(
             $template ?: $pagination->getSortableTemplate(),
@@ -91,7 +91,7 @@ class PaginationHelper extends Helper
      *
      * @return string
      */
-    public function filter(SlidingPagination $pagination, array $fields, $options = array(), $params = array(), $template = null)
+    public function filter(SlidingPagination $pagination, array $fields, $options = [], $params = [], $template = null)
     {
         return $this->templating->render(
             $template ?: $pagination->getFiltrationTemplate(),

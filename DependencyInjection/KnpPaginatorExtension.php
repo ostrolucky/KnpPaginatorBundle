@@ -13,7 +13,7 @@ class KnpPaginatorExtension extends Extension
     /**
      * Build the extension services
      *
-     * @param array $configs
+     * @param array            $configs
      * @param ContainerBuilder $container
      */
     public function load(array $configs, ContainerBuilder $container)
@@ -38,14 +38,18 @@ class KnpPaginatorExtension extends Extension
         $container->setParameter('knp_paginator.page_range', $config['page_range']);
 
         $paginatorDef = $container->getDefinition('knp_paginator');
-        $paginatorDef->addMethodCall('setDefaultPaginatorOptions', array(array(
-            'pageParameterName' => $config['default_options']['page_name'],
-            'sortFieldParameterName' => $config['default_options']['sort_field_name'],
-            'sortDirectionParameterName' => $config['default_options']['sort_direction_name'],
-            'filterFieldParameterName' => $config['default_options']['filter_field_name'],
-            'filterValueParameterName' => $config['default_options']['filter_value_name'],
-            'distinct' => $config['default_options']['distinct']
-        )));
+        $paginatorDef->addMethodCall(
+            'setDefaultPaginatorOptions', [
+                [
+                    'pageParameterName'          => $config['default_options']['page_name'],
+                    'sortFieldParameterName'     => $config['default_options']['sort_field_name'],
+                    'sortDirectionParameterName' => $config['default_options']['sort_direction_name'],
+                    'filterFieldParameterName'   => $config['default_options']['filter_field_name'],
+                    'filterValueParameterName'   => $config['default_options']['filter_value_name'],
+                    'distinct'                   => $config['default_options']['distinct'],
+                ],
+            ]
+        );
 
         $paginatorDef->setLazy(true);
     }

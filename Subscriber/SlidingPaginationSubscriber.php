@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class SlidingPaginationSubscriber implements EventSubscriberInterface
 {
     private $route;
-    private $params = array();
+    private $params = [];
     private $options;
 
     public function __construct(array $options)
@@ -28,7 +28,7 @@ class SlidingPaginationSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
 
         $this->route = $request->attributes->get('_route');
-        $this->params = array_merge($request->query->all(), $request->attributes->get('_route_params', array()));
+        $this->params = array_merge($request->attributes->get('_route_params', []), $request->query->all());
         foreach ($this->params as $key => $param) {
             if (substr($key, 0, 1) == '_') {
                 unset($this->params[$key]);
@@ -63,8 +63,8 @@ class SlidingPaginationSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(
-            'knp_pager.pagination' => array('pagination', 1)
-        );
+        return [
+            'knp_pager.pagination' => ['pagination', 1],
+        ];
     }
 }

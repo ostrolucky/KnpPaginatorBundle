@@ -34,7 +34,7 @@ class PaginatorAwarePass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $defaultAttributes = array('paginator' => 'knp_paginator');
+        $defaultAttributes = ['paginator' => 'knp_paginator'];
 
         foreach ($container->findTaggedServiceIds(self::PAGINATOR_AWARE_TAG) as $id => $attributes) {
             $definition = $container->getDefinition($id);
@@ -58,7 +58,7 @@ class PaginatorAwarePass implements CompilerPassInterface
                 );
             }
 
-            $definition->addMethodCall('setPaginator', array(new Reference($attributes['paginator'])));
+            $definition->addMethodCall('setPaginator', [new Reference($attributes['paginator'])]);
             $container->setDefinition($id, $definition);
         }
     }

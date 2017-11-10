@@ -40,7 +40,7 @@ class Processor
      *
      * @return array
      */
-    public function render(SlidingPagination $pagination, array $queryParams = array(), array $viewParams = array())
+    public function render(SlidingPagination $pagination, array $queryParams = [], array $viewParams = [])
     {
         $data = $pagination->getPaginationData();
 
@@ -71,23 +71,24 @@ class Processor
      *
      * @return array
      */
-    public function sortable(SlidingPagination $pagination, $title, $key, $options = array(), $params = array())
+    public function sortable(SlidingPagination $pagination, $title, $key, $options = [], $params = [])
     {
         if (is_array($key)) {
             $key = implode('+', $key);
         }
 
-        $options = array_merge(array(
-            'absolute' => defined('Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_PATH') ? UrlGeneratorInterface::ABSOLUTE_PATH : false,
-            'translationParameters' => array(),
-            'translationDomain' => null,
-            'translationCount' => null,
-        ), $options);
+        $options = array_merge(
+            [
+                'absolute' => defined(UrlGeneratorInterface::class) ? UrlGeneratorInterface::ABSOLUTE_PATH : false,
+                'translationParameters' => [],
+                'translationDomain' => null,
+                'translationCount' => null,
+            ], $options
+        );
 
 
         $hasFixedDirection = $pagination->getPaginatorOption('sortDirectionParameterName') !== null
-            && isset($params[$pagination->getPaginatorOption('sortDirectionParameterName')])
-        ;
+            && isset($params[$pagination->getPaginatorOption('sortDirectionParameterName')]);
 
         $params = array_merge($pagination->getParams(), $params);
 
@@ -103,7 +104,7 @@ class Processor
         $sorted = $pagination->isSorted($key, $params);
 
         if ($sorted) {
-            if (!$hasFixedDirection) {
+            if ( ! $hasFixedDirection) {
                 $direction = strtolower($direction) === 'asc' ? 'desc' : 'asc';
             }
 
@@ -113,7 +114,7 @@ class Processor
         }
 
         if (isset($options['class'])) {
-            $options['class'] .= ' ' . $class;
+            $options['class'] .= ' '.$class;
         } else {
             $options['class'] = $class;
         }
@@ -124,11 +125,11 @@ class Processor
 
         $params = array_merge(
             $params,
-            array(
+            [
                 $pagination->getPaginatorOption('sortFieldParameterName') => $key,
                 $pagination->getPaginatorOption('sortDirectionParameterName') => $direction,
                 $pagination->getPaginatorOption('pageParameterName') => 1 // reset to 1 on sort
-            )
+            ]
         );
 
         $options['href'] = $this->router->generate($pagination->getRoute(), $params, $options['absolute']);
@@ -141,7 +142,7 @@ class Processor
             }
         }
 
-        if (!isset($options['title'])) {
+        if ( ! isset($options['title'])) {
             $options['title'] = $title;
         }
 
@@ -169,14 +170,16 @@ class Processor
      *
      * @return array
      */
-    public function filter(SlidingPagination $pagination, array $fields, $options = array(), $params = array())
+    public function filter(SlidingPagination $pagination, array $fields, $options = [], $params = [])
     {
-        $options = array_merge(array(
-            'absolute' => defined('Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_PATH') ? UrlGeneratorInterface::ABSOLUTE_PATH : false,
-            'translationParameters' => array(),
-            'translationDomain' => null,
-            'button' => 'Filter',
-        ), $options);
+        $options = array_merge(
+            [
+                'absolute' => defined(UrlGeneratorInterface::class) ? UrlGeneratorInterface::ABSOLUTE_PATH : false,
+                'translationParameters' => [],
+                'translationDomain' => null,
+                'button' => 'Filter',
+            ], $options
+        );
 
         $params = array_merge($pagination->getParams(), $params);
         $params[$pagination->getPaginatorOption('pageParameterName')] = 1; // reset to 1 on filter
